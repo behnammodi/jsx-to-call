@@ -1,0 +1,3 @@
+function createJSXFragment() {}
+
+export { createJSXFragment };
