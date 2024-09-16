@@ -77,15 +77,17 @@ const pushComponentToStack: PushComponentToStack = (component, props) => {
 };
 
 const takeCareOfChildren: TakeCareOfChildren = (children) => {
-  if (children.length > 0) {
-    children.forEach(([component, props, grandchildren]) => {
-      const index = findMyChildren(component, props);
-      stack.splice(index, 1);
-      pushComponentToStack(component, props);
-
-      takeCareOfChildren(grandchildren);
-    });
+  if (children.length === 0) {
+    return;
   }
+
+  children.forEach(([component, props, grandchildren]) => {
+    const index = findMyChildren(component, props);
+    stack.splice(index, 1);
+    pushComponentToStack(component, props);
+
+    takeCareOfChildren(grandchildren);
+  });
 };
 
 let stackFrameId: number;
