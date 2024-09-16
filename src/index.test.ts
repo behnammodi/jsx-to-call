@@ -1,5 +1,7 @@
 import JSX, { Fragment } from "./index";
-import { nextCallStackFrame } from "./test-helpers";
+
+const delay = (ms: number = 0) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 describe("jsx-to-call", () => {
   it("should jsx to call", async () => {
@@ -15,7 +17,7 @@ describe("jsx-to-call", () => {
      */
     JSX.createCall(ComponentA, { prop1: "1" });
 
-    await nextCallStackFrame();
+    await delay();
 
     expect(order).toEqual(expectedOrder);
   });
@@ -39,7 +41,7 @@ describe("jsx-to-call", () => {
      */
     JSX.createCall(ComponentA, { prop1: "1" }, JSX.createCall(ComponentB, {}));
 
-    await nextCallStackFrame();
+    await delay();
 
     expect(order).toEqual(expectedOrder);
   });
@@ -73,7 +75,7 @@ describe("jsx-to-call", () => {
       JSX.createCall(ComponentC, {})
     );
 
-    await nextCallStackFrame();
+    await delay();
 
     expect(order).toEqual(expectedOrder);
   });
@@ -107,7 +109,7 @@ describe("jsx-to-call", () => {
       JSX.createCall(ComponentB, {}, JSX.createCall(ComponentC, {}))
     );
 
-    await nextCallStackFrame();
+    await delay();
 
     expect(order).toEqual(expectedOrder);
   });
@@ -156,7 +158,7 @@ describe("jsx-to-call", () => {
       )
     );
 
-    await nextCallStackFrame();
+    await delay();
 
     expect(order).toEqual(expectedOrder);
   });
@@ -186,7 +188,7 @@ describe("jsx-to-call", () => {
       JSX.createCall(ComponentB, {})
     );
 
-    await nextCallStackFrame();
+    await delay();
 
     expect(order).toEqual(expectedOrder);
   });
