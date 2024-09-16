@@ -1,14 +1,13 @@
-import { nextCallStackFrame } from "./test-helpers";
-import { createJSXCallStack } from "./jsx-call-stack";
 import { createJSXCallStackRunner } from "./jsx-call-stack-runner";
+import { nextCallStackFrame } from "./test-helpers";
 
-describe("jsx-stack", () => {
+describe("jsx-call-stack-runner", () => {
   it("should run components in the order they were pushed", async () => {
     const runner = createJSXCallStackRunner();
-    const { callStack, push } = createJSXCallStack(runner);
+
+    const expectedOrder = ["ComponentA", "ComponentB", "ComponentC"];
 
     const order: string[] = [];
-    const expectedOrder = ["ComponentA", "ComponentB", "ComponentC"];
 
     const ComponentA = () => {
       order.push("ComponentA");
@@ -25,14 +24,16 @@ describe("jsx-stack", () => {
     };
     const ComponentCProps = {};
 
-    push(ComponentA, ComponentAProps);
-    push(ComponentB, ComponentBProps);
-    push(ComponentC, ComponentCProps);
+    const { run } = runner([
+      [ComponentA, ComponentAProps],
+      [ComponentB, ComponentBProps],
+      [ComponentC, ComponentCProps],
+    ]);
+
+    run();
 
     await nextCallStackFrame();
 
     expect(order).toEqual(expectedOrder);
-
-    expect(callStack).toEqual([]);
   });
 });

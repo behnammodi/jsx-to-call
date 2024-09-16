@@ -1,20 +1,11 @@
-function createJSXCallStack() {
+function createJSXCallStack(runner) {
   let callStack = [];
-  let runnerId = null;
-
-  const run = () => {
-    callStack.forEach(([component, props]) => {
-      component(props);
-    });
-
-    callStack = [];
-  };
+  const { run } = runner(callStack);
 
   const push = (component, props) => {
     callStack.push([component, props]);
 
-    clearTimeout(runnerId);
-    runnerId = setTimeout(run, 0);
+    run();
   };
 
   return { push, callStack };
