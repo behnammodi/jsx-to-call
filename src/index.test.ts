@@ -2,7 +2,7 @@ import JSX, { Fragment } from "./index";
 import { nextCallStackFrame } from "./test-helpers";
 
 describe("jsx-to-call", () => {
-  it("should convert jsx to call", async () => {
+  it("should jsx to call", async () => {
     const order: string[] = [];
     const expectedOrder = ["ComponentA"];
 
@@ -20,7 +20,7 @@ describe("jsx-to-call", () => {
     expect(order).toEqual(expectedOrder);
   });
 
-  it("should convert jsx to call with children", async () => {
+  it("should jsx to call with children", async () => {
     const order: string[] = [];
     const expectedOrder = ["ComponentA", "ComponentB"];
 
@@ -44,7 +44,7 @@ describe("jsx-to-call", () => {
     expect(order).toEqual(expectedOrder);
   });
 
-  it("should convert jsx to call with multiple children", async () => {
+  it("should jsx to call with multiple children", async () => {
     const order: string[] = [];
     const expectedOrder = ["ComponentA", "ComponentB", "ComponentC"];
 
@@ -78,7 +78,7 @@ describe("jsx-to-call", () => {
     expect(order).toEqual(expectedOrder);
   });
 
-  it("should convert jsx to call with nested children", async () => {
+  it("should jsx to call with nested children", async () => {
     const order: string[] = [];
     const expectedOrder = ["ComponentA", "ComponentB", "ComponentC"];
 
@@ -112,7 +112,7 @@ describe("jsx-to-call", () => {
     expect(order).toEqual(expectedOrder);
   });
 
-  it("should convert jsx to call with multiple nested children", async () => {
+  it("should jsx to call with multiple nested children", async () => {
     const order: string[] = [];
     const expectedOrder = [
       "ComponentA",
@@ -154,6 +154,36 @@ describe("jsx-to-call", () => {
         JSX.createCall(ComponentC, {}),
         JSX.createCall(ComponentD, {})
       )
+    );
+
+    await nextCallStackFrame();
+
+    expect(order).toEqual(expectedOrder);
+  });
+
+  it("should handle Fragment as well", async () => {
+    const order: string[] = [];
+    const expectedOrder = ["ComponentA", "ComponentB"];
+
+    function ComponentA() {
+      order.push("ComponentA");
+    }
+
+    function ComponentB() {
+      order.push("ComponentB");
+    }
+
+    /**
+     * <>
+     *  <ComponentA />
+     *  <ComponentB />
+     * </>
+     */
+    JSX.createCall(
+      Fragment,
+      {},
+      JSX.createCall(ComponentA, {}),
+      JSX.createCall(ComponentB, {})
     );
 
     await nextCallStackFrame();
