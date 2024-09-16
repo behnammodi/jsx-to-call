@@ -1,4 +1,4 @@
-import jsx from "./index";
+import JSX, { Fragment } from "./index";
 import { nextCallStackFrame } from "./test-helpers";
 
 describe("jsx-to-call", () => {
@@ -13,7 +13,7 @@ describe("jsx-to-call", () => {
     /**
      * <ComponentA prop1="1" />
      */
-    jsx.createCall(ComponentA, { prop1: "1" });
+    JSX.createCall(ComponentA, { prop1: "1" });
 
     await nextCallStackFrame();
 
@@ -37,7 +37,75 @@ describe("jsx-to-call", () => {
      *  <ComponentB />
      * </ComponentA>
      */
-    jsx.createCall(ComponentA, { prop1: "1" }, jsx.createCall(ComponentB, {}));
+    JSX.createCall(ComponentA, { prop1: "1" }, JSX.createCall(ComponentB, {}));
+
+    await nextCallStackFrame();
+
+    expect(order).toEqual(expectedOrder);
+  });
+
+  it("should convert jsx to call with multiple children", async () => {
+    const order: string[] = [];
+    const expectedOrder = ["ComponentA", "ComponentB", "ComponentC"];
+
+    function ComponentA() {
+      order.push("ComponentA");
+    }
+
+    function ComponentB() {
+      order.push("ComponentB");
+    }
+
+    function ComponentC() {
+      order.push("ComponentC");
+    }
+
+    /**
+     * <ComponentA prop1="1">
+     *  <ComponentB />
+     *  <ComponentC />
+     * </ComponentA>
+     */
+    JSX.createCall(
+      ComponentA,
+      { prop1: "1" },
+      JSX.createCall(ComponentB, {}),
+      JSX.createCall(ComponentC, {})
+    );
+
+    await nextCallStackFrame();
+
+    expect(order).toEqual(expectedOrder);
+  });
+
+  it("should convert jsx to call with nested children", async () => {
+    const order: string[] = [];
+    const expectedOrder = ["ComponentA", "ComponentB", "ComponentC"];
+
+    function ComponentA() {
+      order.push("ComponentA");
+    }
+
+    function ComponentB() {
+      order.push("ComponentB");
+    }
+
+    function ComponentC() {
+      order.push("ComponentC");
+    }
+
+    /**
+     * <ComponentA prop1="1">
+     *  <ComponentB>
+     *    <ComponentC />
+     *  </ComponentB>
+     * </ComponentA>
+     */
+    JSX.createCall(
+      ComponentA,
+      { prop1: "1" },
+      JSX.createCall(ComponentB, {}, JSX.createCall(ComponentC, {}))
+    );
 
     await nextCallStackFrame();
 

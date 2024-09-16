@@ -1,6 +1,6 @@
 type Component = Function;
 type Props = Object;
-type StackFrame = Function;
+type StackFrame = Function & { __component: Component; __props: Props };
 type Stack = Array<StackFrame>;
 
 type CreateCallIdentifier = [component: Component, props: Props];
@@ -13,13 +13,19 @@ type CreateCall = (
 
 type CreateStackFrame = (component: Component, props: Props) => StackFrame;
 
-type PushStack = (stack: Stack, stackFrame: StackFrame) => void;
+type PushStack = (stackFrame: StackFrame) => void;
 
 type CallStack = () => void;
 
 type AddToEventQueue = (callback: Function) => number;
 
 type RemoveFromEventQueue = (timeoutId: number) => void;
+
+type FindMyChildren = (component: Component, props: Props) => number;
+
+type TakeCareOfChildren = (children: Array<CreateCallIdentifier>) => void;
+
+type PushComponentToStack = (component: Component, props: Props) => void;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,14 +39,26 @@ const addToEventQueue: AddToEventQueue = (callback) => {
   return setTimeout(callback, 0);
 };
 
-const pushToStack: PushStack = (stack, stackFrame) => {
+const pushToStack: PushStack = (stackFrame) => {
   stack.push(stackFrame);
 };
 
 const createStackFrame: CreateStackFrame = (component, props) => {
-  return () => {
+  function stackFrame() {
     component(props);
-  };
+  }
+
+  stackFrame.__component = component;
+  stackFrame.__props = props;
+
+  return stackFrame;
+};
+
+const findMyChildren: FindMyChildren = (component, props) => {
+  return stack.findIndex(
+    (stackFrame) =>
+      stackFrame.__component === component && stackFrame.__props === props
+  );
 };
 
 const callStack: CallStack = () => {
@@ -49,12 +67,27 @@ const callStack: CallStack = () => {
   });
 };
 
+const pushComponentToStack: PushComponentToStack = (component, props) => {
+  const stackFrame = createStackFrame(component, props);
+  pushToStack(stackFrame);
+};
+
+const takeCareOfChildren: TakeCareOfChildren = (children) => {
+  if (children.length > 0) {
+    children.forEach(([component, props]) => {
+      const index = findMyChildren(component, props);
+      stack.splice(index, 1);
+      pushComponentToStack(component, props);
+    });
+  }
+};
+
 let stackFrameId: number;
 
 const createCall: CreateCall = (component, props, ...children) => {
-  const stackFrame = createStackFrame(component, props);
+  pushComponentToStack(component, props);
 
-  pushToStack(stack, stackFrame);
+  takeCareOfChildren(children);
 
   removeFromEventQueue(stackFrameId);
   stackFrameId = addToEventQueue(callStack);
@@ -62,8 +95,13 @@ const createCall: CreateCall = (component, props, ...children) => {
   return [component, props];
 };
 
-const jsx = {
+const Fragment = () => {};
+
+const JSX = {
   createCall,
+  Fragment,
 };
 
-export default jsx;
+export { Fragment };
+
+export default JSX;
