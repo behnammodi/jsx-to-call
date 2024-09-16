@@ -1,4 +1,4 @@
-import jsx from "./jsx-to-call";
+import jsx from "./index";
 import { nextCallStackFrame } from "./test-helpers";
 
 describe("jsx-to-call", () => {
@@ -13,7 +13,7 @@ describe("jsx-to-call", () => {
     /**
      * <ComponentA prop1="1" />
      */
-    jsx.caller(ComponentA, { prop1: "1" });
+    jsx.createCall(ComponentA, { prop1: "1" });
 
     await nextCallStackFrame();
 
@@ -37,7 +37,7 @@ describe("jsx-to-call", () => {
      *  <ComponentB />
      * </ComponentA>
      */
-    jsx.caller(ComponentA, { prop1: "1" }, jsx.caller(ComponentB, null));
+    jsx.createCall(ComponentA, { prop1: "1" }, jsx.createCall(ComponentB, {}));
 
     await nextCallStackFrame();
 

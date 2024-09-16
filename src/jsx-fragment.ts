@@ -1,3 +1,0 @@
-function createJSXFragment() {}
-
-export { createJSXFragment };
