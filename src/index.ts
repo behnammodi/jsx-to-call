@@ -1,37 +1,15 @@
-type Component = Function;
-type Props = Object;
-type StackFrame = Function & { __component: Component; __props: Props };
-type Stack = Array<StackFrame>;
-
-type CreateCallIdentifier = [
-  component: Component,
-  props: Props,
-  children: Array<CreateCallIdentifier>
-];
-
-type CreateCall = (
-  component: Component,
-  props: Props,
-  ...children: Array<CreateCallIdentifier>
-) => CreateCallIdentifier;
-
-type CreateStackFrame = (component: Component, props: Props) => StackFrame;
-
-type PushStack = (stackFrame: StackFrame) => void;
-
-type CallStack = () => void;
-
-type AddToEventQueue = (callback: Function) => number;
-
-type RemoveFromEventQueue = (timeoutId: number) => void;
-
-type FindMyChildren = (component: Component, props: Props) => number;
-
-type TakeCareOfChildren = (children: Array<CreateCallIdentifier>) => void;
-
-type PushComponentToStack = (component: Component, props: Props) => void;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
+import type {
+  Stack,
+  CallStack,
+  PushStack,
+  CreateCall,
+  FindMyChildren,
+  AddToEventQueue,
+  CreateStackFrame,
+  TakeCareOfChildren,
+  PushComponentToStack,
+  RemoveFromEventQueue,
+} from "./types";
 
 const stack: Stack = [];
 
