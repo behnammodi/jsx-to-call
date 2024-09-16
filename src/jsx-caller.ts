@@ -1,9 +1,9 @@
-function createJSXCaller(stack) {
+function createJSXCaller(callStack) {
   const caller = function (component, props, ...children) {
     console.log({
       children,
     });
-    stack.push(component, props);
+    callStack.push(component, props);
     // TODO: find my children and move to front of me
     return [component, props];
   };

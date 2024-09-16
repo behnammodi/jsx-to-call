@@ -1,9 +1,9 @@
 import { createJSXCaller } from "./jsx-caller";
-import { createJSXStack } from "./jsx-stack";
+import { createJSXCallStack } from "./jsx-call-stack";
 import { createJSXFragment } from "./jsx-fragment";
 
-const stack = createJSXStack();
-const { caller } = createJSXCaller(stack);
+const jsxCallStack = createJSXCallStack();
+const { caller } = createJSXCaller(jsxCallStack);
 
 const Fragment = createJSXFragment();
 
