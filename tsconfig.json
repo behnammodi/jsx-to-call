@@ -3,7 +3,8 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "module": "ESNext",
-    "sourceMap": true
+    "sourceMap": true,
+    "declaration": true
   },
   "exclude": ["**/*.test.ts"]
 }
