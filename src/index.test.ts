@@ -111,4 +111,53 @@ describe("jsx-to-call", () => {
 
     expect(order).toEqual(expectedOrder);
   });
+
+  it("should convert jsx to call with multiple nested children", async () => {
+    const order: string[] = [];
+    const expectedOrder = [
+      "ComponentA",
+      "ComponentB",
+      "ComponentC",
+      "ComponentD",
+    ];
+
+    function ComponentA() {
+      order.push("ComponentA");
+    }
+
+    function ComponentB() {
+      order.push("ComponentB");
+    }
+
+    function ComponentC() {
+      order.push("ComponentC");
+    }
+
+    function ComponentD() {
+      order.push("ComponentD");
+    }
+
+    /**
+     * <ComponentA prop1="1">
+     *  <ComponentB>
+     *    <ComponentC />
+     *    <ComponentD />
+     *  </ComponentB>
+     * </ComponentA>
+     */
+    JSX.createCall(
+      ComponentA,
+      { prop1: "1" },
+      JSX.createCall(
+        ComponentB,
+        {},
+        JSX.createCall(ComponentC, {}),
+        JSX.createCall(ComponentD, {})
+      )
+    );
+
+    await nextCallStackFrame();
+
+    expect(order).toEqual(expectedOrder);
+  });
 });
