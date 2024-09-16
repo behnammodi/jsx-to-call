@@ -3,7 +3,11 @@ type Props = Object;
 type StackFrame = Function & { __component: Component; __props: Props };
 type Stack = Array<StackFrame>;
 
-type CreateCallIdentifier = [component: Component, props: Props];
+type CreateCallIdentifier = [
+  component: Component,
+  props: Props,
+  children: Array<CreateCallIdentifier>
+];
 
 type CreateCall = (
   component: Component,
@@ -74,10 +78,12 @@ const pushComponentToStack: PushComponentToStack = (component, props) => {
 
 const takeCareOfChildren: TakeCareOfChildren = (children) => {
   if (children.length > 0) {
-    children.forEach(([component, props]) => {
+    children.forEach(([component, props, grandchildren]) => {
       const index = findMyChildren(component, props);
       stack.splice(index, 1);
       pushComponentToStack(component, props);
+
+      takeCareOfChildren(grandchildren);
     });
   }
 };
@@ -92,7 +98,7 @@ const createCall: CreateCall = (component, props, ...children) => {
   removeFromEventQueue(stackFrameId);
   stackFrameId = addToEventQueue(callStack);
 
-  return [component, props];
+  return [component, props, children];
 };
 
 const Fragment = () => {};
