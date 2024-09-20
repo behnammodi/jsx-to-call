@@ -17,8 +17,6 @@ type CreateCall = (
 
 type CallStack = () => void;
 type PushStack = (stackFrame: StackFrame) => void;
-type StartRunner = (callback: Function) => number;
-type StopRunner = (timeoutId: number) => void;
 type FindMyChildren = (component: Component, props: Props) => number;
 type PushComponentToStack = (component: Component, props: Props) => void;
 type TakeCareOfChildren = (children: Array<CreateCallIdentifier>) => void;
@@ -32,8 +30,6 @@ export {
   Component,
   StackFrame,
   CreateCall,
-  StopRunner,
-  StartRunner,
   FindMyChildren,
   CreateStackFrame,
   TakeCareOfChildren,

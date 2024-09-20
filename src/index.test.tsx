@@ -1,4 +1,4 @@
-import JSX, { Fragment } from "./index";
+import JSX from "./index";
 
 const delay = (ms: number = 0) =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -12,12 +12,7 @@ describe("jsx-to-call", () => {
       order.push("ComponentA");
     }
 
-    /**
-     * <ComponentA prop1="1" />
-     */
-    JSX.createCall(ComponentA, { prop1: "1" });
-
-    await delay();
+    JSX.call(<ComponentA prop1="1" />);
 
     expect(order).toEqual(expectedOrder);
   });
@@ -34,14 +29,11 @@ describe("jsx-to-call", () => {
       order.push("ComponentB");
     }
 
-    /**
-     * <ComponentA prop1="1">
-     *  <ComponentB />
-     * </ComponentA>
-     */
-    JSX.createCall(ComponentA, { prop1: "1" }, JSX.createCall(ComponentB, {}));
-
-    await delay();
+    JSX.call(
+      <ComponentA prop1="1">
+        <ComponentB />
+      </ComponentA>
+    );
 
     expect(order).toEqual(expectedOrder);
   });
@@ -62,20 +54,12 @@ describe("jsx-to-call", () => {
       order.push("ComponentC");
     }
 
-    /**
-     * <ComponentA prop1="1">
-     *  <ComponentB />
-     *  <ComponentC />
-     * </ComponentA>
-     */
-    JSX.createCall(
-      ComponentA,
-      { prop1: "1" },
-      JSX.createCall(ComponentB, {}),
-      JSX.createCall(ComponentC, {})
+    JSX.call(
+      <ComponentA prop1="1">
+        <ComponentB />
+        <ComponentC />
+      </ComponentA>
     );
-
-    await delay();
 
     expect(order).toEqual(expectedOrder);
   });
@@ -96,20 +80,13 @@ describe("jsx-to-call", () => {
       order.push("ComponentC");
     }
 
-    /**
-     * <ComponentA prop1="1">
-     *  <ComponentB>
-     *    <ComponentC />
-     *  </ComponentB>
-     * </ComponentA>
-     */
-    JSX.createCall(
-      ComponentA,
-      { prop1: "1" },
-      JSX.createCall(ComponentB, {}, JSX.createCall(ComponentC, {}))
+    JSX.call(
+      <ComponentA prop1="1">
+        <ComponentB>
+          <ComponentC />
+        </ComponentB>
+      </ComponentA>
     );
-
-    await delay();
 
     expect(order).toEqual(expectedOrder);
   });
@@ -139,26 +116,14 @@ describe("jsx-to-call", () => {
       order.push("ComponentD");
     }
 
-    /**
-     * <ComponentA prop1="1">
-     *  <ComponentB>
-     *    <ComponentC />
-     *    <ComponentD />
-     *  </ComponentB>
-     * </ComponentA>
-     */
-    JSX.createCall(
-      ComponentA,
-      { prop1: "1" },
-      JSX.createCall(
-        ComponentB,
-        {},
-        JSX.createCall(ComponentC, {}),
-        JSX.createCall(ComponentD, {})
-      )
+    JSX.call(
+      <ComponentA prop1="1">
+        <ComponentB>
+          <ComponentC />
+          <ComponentD />
+        </ComponentB>
+      </ComponentA>
     );
-
-    await delay();
 
     expect(order).toEqual(expectedOrder);
   });
@@ -175,20 +140,12 @@ describe("jsx-to-call", () => {
       order.push("ComponentB");
     }
 
-    /**
-     * <>
-     *  <ComponentA />
-     *  <ComponentB />
-     * </>
-     */
-    JSX.createCall(
-      Fragment,
-      {},
-      JSX.createCall(ComponentA, {}),
-      JSX.createCall(ComponentB, {})
+    JSX.call(
+      <>
+        <ComponentA />
+        <ComponentB />
+      </>
     );
-
-    await delay();
 
     expect(order).toEqual(expectedOrder);
   });
