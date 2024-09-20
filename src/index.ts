@@ -3,28 +3,33 @@ import type {
   CallStack,
   PushStack,
   CreateCall,
+  StopRunner,
+  StartRunner,
   FindMyChildren,
-  AddToEventQueue,
   CreateStackFrame,
   TakeCareOfChildren,
   PushComponentToStack,
-  RemoveFromEventQueue,
 } from "./types";
 
+// Initialize an empty stack
 const stack: Stack = [];
 
-const removeFromEventQueue: RemoveFromEventQueue = (timeoutId) => {
+// Function to remove a callback from the event queue
+const stopRunner: StopRunner = (timeoutId) => {
   clearTimeout(timeoutId);
 };
 
-const addToEventQueue: AddToEventQueue = (callback) => {
+// Function to add a callback to the event queue
+const startRunner: StartRunner = (callback) => {
   return setTimeout(callback, 0);
 };
 
+// Function to push a stack frame onto the stack
 const pushToStack: PushStack = (stackFrame) => {
   stack.push(stackFrame);
 };
 
+// Function to create a stack frame for a component and its props
 const createStackFrame: CreateStackFrame = (component, props) => {
   function stackFrame() {
     component(props);
@@ -36,6 +41,7 @@ const createStackFrame: CreateStackFrame = (component, props) => {
   return stackFrame;
 };
 
+// Function to find the index of a component's stack frame in the stack
 const findMyChildren: FindMyChildren = (component, props) => {
   return stack.findIndex(
     (stackFrame) =>
@@ -43,17 +49,20 @@ const findMyChildren: FindMyChildren = (component, props) => {
   );
 };
 
+// Function to call each stack frame in the stack
 const callStack: CallStack = () => {
   stack.forEach((stackFrame) => {
     stackFrame();
   });
 };
 
+// Function to push a component and its props onto the stack
 const pushComponentToStack: PushComponentToStack = (component, props) => {
   const stackFrame = createStackFrame(component, props);
   pushToStack(stackFrame);
 };
 
+// Recursive function to handle children components
 const takeCareOfChildren: TakeCareOfChildren = (children) => {
   if (children.length === 0) {
     return;
@@ -61,28 +70,33 @@ const takeCareOfChildren: TakeCareOfChildren = (children) => {
 
   children.forEach(([component, props, grandchildren]) => {
     const index = findMyChildren(component, props);
-    stack.splice(index, 1);
+    if (index !== -1) {
+      stack.splice(index, 1);
+    }
     pushComponentToStack(component, props);
 
     takeCareOfChildren(grandchildren);
   });
 };
 
-let stackFrameId: number;
+let lastRunnerID: number;
 
+// Function to create a call for a component and its children
 const createCall: CreateCall = (component, props, ...children) => {
   pushComponentToStack(component, props);
 
   takeCareOfChildren(children);
 
-  removeFromEventQueue(stackFrameId);
-  stackFrameId = addToEventQueue(callStack);
+  stopRunner(lastRunnerID);
+  lastRunnerID = startRunner(callStack);
 
   return [component, props, children];
 };
 
+// Fragment component
 const Fragment = () => {};
 
+// JSX object with createCall and Fragment
 const JSX = {
   createCall,
   Fragment,
