@@ -1,8 +1,5 @@
 import JSX from "./index";
 
-const delay = (ms: number = 0) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
 describe("jsx-to-call", () => {
   it("should jsx to call", async () => {
     const order: string[] = [];

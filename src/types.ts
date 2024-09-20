@@ -16,23 +16,29 @@ type CreateCall = (
 ) => CreateCallIdentifier;
 
 type CallStack = () => void;
-type PushStack = (stackFrame: StackFrame) => void;
+type PushToStack = (stackFrame: StackFrame) => void;
 type FindMyChildren = (component: Component, props: Props) => number;
 type PushComponentToStack = (component: Component, props: Props) => void;
 type TakeCareOfChildren = (children: Array<CreateCallIdentifier>) => void;
 type CreateStackFrame = (component: Component, props: Props) => StackFrame;
+type CreateJSXWithFragment = () => {
+  call: Function;
+  Fragment: Function;
+  createCall: CreateCall;
+};
 
 export {
   Props,
   Stack,
-  PushStack,
   CallStack,
   Component,
   StackFrame,
   CreateCall,
+  PushToStack,
   FindMyChildren,
   CreateStackFrame,
   TakeCareOfChildren,
   PushComponentToStack,
   CreateCallIdentifier,
+  CreateJSXWithFragment,
 };
