@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
     "outDir": "./dist",
     "module": "ESNext",
     "sourceMap": true,
     "declaration": true,
+    "moduleResolution": "Node",
     "jsx": "react",
     "jsxFactory": "JSX.createCall",
     "jsxFragmentFactory": "JSX.Fragment"
   },
-  "exclude": ["**/*.test.ts", "dist", "readme.ts"]
+  "include": ["src/**/*"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "dist", "readme.ts"]
 }

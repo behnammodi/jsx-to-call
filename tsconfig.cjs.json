@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS", // Set the module system to CommonJS
+    "esModuleInterop": true,
+    "outDir": "./dist/cjs"
+  }
+}

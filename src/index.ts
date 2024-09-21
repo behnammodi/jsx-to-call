@@ -1,4 +1,9 @@
-import type { Call, CreateCall, CreateJSXWithFragment } from "./types";
+import type {
+  Call,
+  Children,
+  CreateCall,
+  CreateJSXWithFragment,
+} from "./types";
 
 const createJSXWithFragment: CreateJSXWithFragment = () => {
   const createCall: CreateCall = (component, props, ...children) => [
@@ -19,10 +24,10 @@ const createJSXWithFragment: CreateJSXWithFragment = () => {
     // return children if children is not equal to next
     if (children !== returnedChildren) return returnedChildren;
 
-    returnedChildren.forEach((children) => call(children));
+    (returnedChildren as Children).forEach((children) => call(children));
   };
 
-  const Fragment = ({ children }) => children;
+  const Fragment = ({ children }: { children: Children }) => children;
 
   return {
     call,
