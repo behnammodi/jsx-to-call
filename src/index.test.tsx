@@ -9,7 +9,7 @@ describe("jsx-to-call", () => {
       order.push("ComponentA");
     }
 
-    JSX.call(<ComponentA prop1="1" />);
+    JSX.call(<ComponentA />);
 
     expect(order).toEqual(expectedOrder);
   });
@@ -18,8 +18,10 @@ describe("jsx-to-call", () => {
     const order: string[] = [];
     const expectedOrder = ["ComponentA", "ComponentB"];
 
-    function ComponentA() {
+    function ComponentA({ children = null }) {
       order.push("ComponentA");
+
+      return children;
     }
 
     function ComponentB() {
@@ -27,7 +29,7 @@ describe("jsx-to-call", () => {
     }
 
     JSX.call(
-      <ComponentA prop1="1">
+      <ComponentA>
         <ComponentB />
       </ComponentA>
     );

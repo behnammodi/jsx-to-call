@@ -15,9 +15,9 @@ const createJSXWithFragment: CreateJSXWithFragment = () => {
 
   const pushToStack: PushToStack = (stackFrame) => stack.push(stackFrame);
 
-  const createStackFrame: CreateStackFrame = (component, props) => {
+  const createStackFrame: CreateStackFrame = (component, props, children) => {
     function stackFrame() {
-      component(props);
+      component({ ...props, children });
     }
 
     stackFrame.__component = component;
@@ -42,8 +42,12 @@ const createJSXWithFragment: CreateJSXWithFragment = () => {
     cleanStack();
   };
 
-  const pushComponentToStack: PushComponentToStack = (component, props) => {
-    const stackFrame = createStackFrame(component, props);
+  const pushComponentToStack: PushComponentToStack = (
+    component,
+    props,
+    children
+  ) => {
+    const stackFrame = createStackFrame(component, props, children);
     pushToStack(stackFrame);
   };
 
@@ -55,14 +59,14 @@ const createJSXWithFragment: CreateJSXWithFragment = () => {
       if (index !== -1) {
         stack.splice(index, 1);
       }
-      pushComponentToStack(component, props);
+      pushComponentToStack(component, props, grandchildren);
 
       takeCareOfChildren(grandchildren);
     });
   };
 
   const createCall: CreateCall = (component, props, ...children) => {
-    pushComponentToStack(component, props);
+    pushComponentToStack(component, props, children);
 
     takeCareOfChildren(children);
 
