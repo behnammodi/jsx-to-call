@@ -1,58 +1,17 @@
-type Falsy = null | undefined | false | 0 | "";
 type Props = Object;
 type Component = Function;
-type Stack = Array<StackFrame>;
-type StackFrame = (() => Children | Falsy) & {
-  __component: Component;
-  __props: Props;
-};
-
-type CreateCallIdentifier = [
-  component: Component,
-  props: Props,
-  children: Children
-];
-
-type Children = Array<CreateCallIdentifier>;
-
+type CallIdentifier = [component: Component, props: Props, children: Children];
+type Children = Array<CallIdentifier>;
 type CreateCall = (
   component: Component,
   props: Props,
   ...children: Children
-) => CreateCallIdentifier;
-
-type CallStack = () => void;
-type PushToStack = (stackFrame: StackFrame) => void;
-type FindMyChildren = (component: Component, props: Props) => number;
-type PushComponentToStack = (
-  component: Component,
-  props: Props,
-  children: Children
-) => void;
-type TakeCareOfChildren = (children: Children) => void;
-type CreateStackFrame = (
-  component: Component,
-  props: Props,
-  children: Children
-) => StackFrame;
+) => CallIdentifier;
 type CreateJSXWithFragment = () => {
   call: Function;
   Fragment: Function;
   createCall: CreateCall;
 };
+type Call = (root: CallIdentifier) => unknown;
 
-export {
-  Props,
-  Stack,
-  CallStack,
-  Component,
-  StackFrame,
-  CreateCall,
-  PushToStack,
-  FindMyChildren,
-  CreateStackFrame,
-  TakeCareOfChildren,
-  PushComponentToStack,
-  CreateCallIdentifier,
-  CreateJSXWithFragment,
-};
+export { CreateCall, CreateJSXWithFragment, Call };

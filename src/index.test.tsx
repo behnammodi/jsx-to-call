@@ -51,8 +51,10 @@ describe("jsx-to-call", () => {
     const order: string[] = [];
     const expectedOrder = ["ComponentA", "ComponentB", "ComponentC"];
 
-    function ComponentA() {
+    function ComponentA({ children = null }) {
       order.push("ComponentA");
+
+      return children;
     }
 
     function ComponentB() {
@@ -64,7 +66,7 @@ describe("jsx-to-call", () => {
     }
 
     JSX.call(
-      <ComponentA prop1="1">
+      <ComponentA>
         <ComponentB />
         <ComponentC />
       </ComponentA>
@@ -77,12 +79,16 @@ describe("jsx-to-call", () => {
     const order: string[] = [];
     const expectedOrder = ["ComponentA", "ComponentB", "ComponentC"];
 
-    function ComponentA() {
+    function ComponentA({ children = null }) {
       order.push("ComponentA");
+
+      return children;
     }
 
-    function ComponentB() {
+    function ComponentB({ children = null }) {
       order.push("ComponentB");
+
+      return children;
     }
 
     function ComponentC() {
@@ -90,7 +96,7 @@ describe("jsx-to-call", () => {
     }
 
     JSX.call(
-      <ComponentA prop1="1">
+      <ComponentA>
         <ComponentB>
           <ComponentC />
         </ComponentB>
@@ -109,12 +115,16 @@ describe("jsx-to-call", () => {
       "ComponentD",
     ];
 
-    function ComponentA() {
+    function ComponentA({ children = null }) {
       order.push("ComponentA");
+
+      return children;
     }
 
-    function ComponentB() {
+    function ComponentB({ children = null }) {
       order.push("ComponentB");
+
+      return children;
     }
 
     function ComponentC() {
@@ -126,7 +136,7 @@ describe("jsx-to-call", () => {
     }
 
     JSX.call(
-      <ComponentA prop1="1">
+      <ComponentA>
         <ComponentB>
           <ComponentC />
           <ComponentD />
