@@ -9,5 +9,5 @@
     "jsxFactory": "JSX.createCall",
     "jsxFragmentFactory": "JSX.Fragment"
   },
-  "exclude": ["**/*.test.ts"]
+  "exclude": ["**/*.test.ts", "dist", "readme.ts"]
 }
