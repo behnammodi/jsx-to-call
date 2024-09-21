@@ -17,7 +17,7 @@ const createJSXWithFragment: CreateJSXWithFragment = () => {
 
   const createStackFrame: CreateStackFrame = (component, props, children) => {
     function stackFrame() {
-      component({ ...props, children });
+      return component({ ...props, children });
     }
 
     stackFrame.__component = component;
@@ -35,11 +35,19 @@ const createJSXWithFragment: CreateJSXWithFragment = () => {
   const cleanStack = () => stack.splice(0, stack.length);
 
   const callStack: CallStack = () => {
+    /**
+     * This is for testing purposes only.
+     */
+    let lastStackFrameReturnValue;
+
     stack.forEach((stackFrame) => {
-      stackFrame();
+      const returnValue = stackFrame();
+      lastStackFrameReturnValue = returnValue;
     });
 
     cleanStack();
+
+    return lastStackFrameReturnValue;
   };
 
   const pushComponentToStack: PushComponentToStack = (

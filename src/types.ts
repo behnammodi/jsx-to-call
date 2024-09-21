@@ -1,7 +1,11 @@
+type Falsy = null | undefined | false | 0 | "";
 type Props = Object;
 type Component = Function;
 type Stack = Array<StackFrame>;
-type StackFrame = Function & { __component: Component; __props: Props };
+type StackFrame = (() => Children | Falsy) & {
+  __component: Component;
+  __props: Props;
+};
 
 type CreateCallIdentifier = [
   component: Component,

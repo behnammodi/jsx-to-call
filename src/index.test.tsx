@@ -14,6 +14,16 @@ describe("jsx-to-call", () => {
     expect(order).toEqual(expectedOrder);
   });
 
+  it("should return component value", async () => {
+    function ComponentA() {
+      return "ComponentA";
+    }
+
+    const returnValue = JSX.call(<ComponentA />);
+
+    expect(returnValue).toEqual("ComponentA");
+  });
+
   it("should jsx to call with children", async () => {
     const order: string[] = [];
     const expectedOrder = ["ComponentA", "ComponentB"];
