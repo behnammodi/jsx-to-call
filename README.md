@@ -26,6 +26,7 @@ Add the following to your tsconfig.json file.
     "jsxFragmentFactory": "JSX.Fragment"
   }
 }
+```
 
 ### Usage
 
