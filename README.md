@@ -6,13 +6,26 @@ Sometimes we want to have isolated parts of our code to be used as a React Compo
 
 ### How?
 
-jsx-to-call is a library that converts JSX syntax to a function call. It's like React.createElement but with different goals.
+jsx-to-call is a library that converts JSX syntax to a function call. It's like React.createElement but for different environment.
 
 ### Installation
 
 ```bash
 npm install jsx-to-call
 ```
+
+### Configuration
+
+Add the following to your tsconfig.json file.
+
+````json
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "JSX.createCall",
+    "jsxFragmentFactory": "JSX.Fragment"
+  }
+}
 
 ### Usage
 
@@ -26,7 +39,7 @@ function ComponentA() {
 function App() {
   return <ComponentA />;
 }
-```
+````
 
 ### why?
 
@@ -54,6 +67,10 @@ export default function (){
     check(homePageRes, {
         "status is 200": (r) => r.status === 200 && r.body.includes("Welcome to Example")
     });
+
+    if(homePageRes.status !== 200){
+        return;
+    }
 
     const headerRes = http.get("https://exmaple.com/api/v1/header");
 
