@@ -18,7 +18,7 @@ npm install jsx-to-call
 
 Add the following to your tsconfig.json file.
 
-````json
+```json
 {
   "compilerOptions": {
     "jsx": "react",
@@ -40,7 +40,7 @@ function ComponentA() {
 function App() {
   return <ComponentA />;
 }
-````
+```
 
 ### why?
 
