@@ -195,3 +195,7 @@ and then use it like this
 ```
 
 Like a React component.
+
+### Babel Present
+
+https://github.com/behnammodi/babel-preset-jsx-to-call
