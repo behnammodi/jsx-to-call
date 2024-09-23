@@ -13,6 +13,16 @@
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
       }
+    },
+    "./jsx-runtime": {
+      "require": {
+        "types": "./dist/cjs/jsx-runtime.d.ts",
+        "default": "./dist/cjs/jsx-runtime.js"
+      },
+      "import": {
+        "types": "./dist/esm/jsx-runtime.d.ts",
+        "default": "./dist/esm/jsx-runtime.js"
+      }
     }
   },
   "type": "module",
