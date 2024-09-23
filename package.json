@@ -46,5 +46,14 @@
     "jsx-to-call",
     "react",
     "k6"
-  ]
+  ],
+  "author": "Behnam Mohammadi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/behnammodi/jsx-to-call.git"
+  },
+  "bugs": {
+    "url": "https://github.com/behnammodi/jsx-to-call.git/issues"
+  },
+  "homepage": "https://github.com/behnammodi/jsx-to-call.git.git#readme"
 }
