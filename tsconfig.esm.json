@@ -3,6 +3,7 @@
   "compilerOptions": {
     "module": "ESNext", // Set the module system to ESModule
     "esModuleInterop": true,
-    "outDir": "./dist/esm"
+    "outDir": "./dist/esm",
+    "verbatimModuleSyntax": true
   }
 }

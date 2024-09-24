@@ -14,4 +14,4 @@ type CreateJSXWithFragment = () => {
 };
 type Call = (root: CallIdentifier) => unknown;
 
-export { CreateCall, Children, CreateJSXWithFragment, Call };
+export type { CreateCall, Children, CreateJSXWithFragment, Call };
