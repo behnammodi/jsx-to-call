@@ -196,6 +196,20 @@ and then use it like this
 
 Like a React component.
 
-### Babel Present
+### Babel Settings
 
-https://github.com/behnammodi/babel-preset-jsx-to-call
+If you are using Babel, you can use the following settings:
+
+```json
+{
+  "presets": [
+    [
+      "@babel/preset-react",
+      {
+        "pragma": "JSX.createCall",
+        "pragmaFrag": "JSX.Fragment"
+      }
+    ]
+  ]
+}
+```
