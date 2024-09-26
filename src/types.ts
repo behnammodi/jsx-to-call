@@ -14,4 +14,17 @@ type CreateJSXWithFragment = () => {
 };
 type Call = (root: CallIdentifier) => unknown;
 
-export type { CreateCall, Children, CreateJSXWithFragment, Call };
+interface FunctionComponent<P = {}> {
+  (props: P & { children: CallIdentifier }): CallIdentifier | void;
+}
+
+type FC<P> = FunctionComponent<P>;
+
+export type {
+  CreateCall,
+  Children,
+  CreateJSXWithFragment,
+  Call,
+  FunctionComponent,
+  FC,
+};

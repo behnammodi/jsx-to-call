@@ -1,4 +1,4 @@
-import JSX from "./index";
+import JSX from "./jsx-to-call";
 
 describe("jsx-to-call", () => {
   it("should jsx to call", async () => {
