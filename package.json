@@ -31,7 +31,9 @@
     "clean:dist": "rimraf dist",
     "build:cjs": "tsc --project tsconfig.cjs.json",
     "build:esm": "tsc --project tsconfig.esm.json",
-    "build": "npm run clean:dist && npm run build:cjs && npm run build:esm"
+    "build": "npm run clean:dist && npm run build:cjs && npm run build:esm",
+    "preversion": "npm run test && npm run build",
+    "postversion": "npm publish && git push && git push --tags"
   },
   "devDependencies": {
     "@jest/types": "^29.6.3",
