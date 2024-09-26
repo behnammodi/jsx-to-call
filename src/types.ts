@@ -16,7 +16,7 @@ type CreateJSXWithFragment = () => {
 type Call = (root: CallIdentifier) => unknown;
 
 interface FunctionComponent<P = {}> {
-  (props: P & { children: CallIdentifier }): CallIdentifier | Falsy;
+  (props: P & { children?: CallIdentifier }): CallIdentifier | Falsy;
 }
 
 type FC<P> = FunctionComponent<P>;
